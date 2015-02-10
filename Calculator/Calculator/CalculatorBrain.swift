@@ -13,6 +13,7 @@ class CalculatorBrain
     private enum Op: Printable
     {
         case Operand(Double)
+        case Constant(String, Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
         
@@ -21,6 +22,8 @@ class CalculatorBrain
                 switch self {
                 case .Operand(let operand):
                     return "\(operand)"
+                case .Constant(let symbol, _):
+                    return symbol
                 case .UnaryOperation(let symbol, _):
                     return symbol
                 case .BinaryOperation(let symbol, _):
@@ -33,19 +36,41 @@ class CalculatorBrain
     private var opStack = [Op]() //Array<Op>()
     
     private var knownOps = [String:Op]() //Dictionary<String, Op>()
-    
+
     init() {
         func learnOp(op: Op) {
             knownOps[op.description] = op
         }
         
-        learnOp(Op.BinaryOperation("× ", *))         //Op.BinaryOperation("×") { $0 * $1 }
+        learnOp(Op.BinaryOperation("×", *))          //Op.BinaryOperation("×") { $0 * $1 }
         learnOp(Op.BinaryOperation("÷") { $1 / $0 })
         learnOp(Op.BinaryOperation("+", +))          //Op.BinaryOperation("+") { $0 + $1 }
         learnOp(Op.BinaryOperation("−") { $1 - $0 })
         learnOp(Op.UnaryOperation("√", sqrt))        //Op.UnaryOperation("√") { sqrt($0) }
         learnOp(Op.UnaryOperation("sin") { sin($0) })
         learnOp(Op.UnaryOperation("cos") { cos($0) })
+        learnOp(Op.Constant("π", M_PI))
+    }
+    
+    typealias PropertyList = AnyObject
+    
+    var program: PropertyList { // gaurenteed to be a PropertyList
+        get {
+            return opStack.map { $0.description }
+        }
+        set {
+            if let opSymbols = newValue as? Array<String> {
+                var newOpStack = [Op]()
+                for opSymbol in opSymbols {
+                    if let op = knownOps[opSymbol] {
+                        opStack.append(op)
+                    } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
+                        opStack.append(.Operand(operand))
+                    }
+                }
+                opStack = newOpStack
+            }
+        }
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]){
@@ -57,8 +82,11 @@ class CalculatorBrain
             switch op {
             case .Operand(let operand):
                 return (operand, remainingOps)
-            case .UnaryOperation(_, let operation):
+            case .Constant(_, let constant):
+                return (constant, remainingOps)
+            case .UnaryOperation(let name, let operation):
                 let operandEvaluation = evaluate(remainingOps)
+                
                 if let operand = operandEvaluation.result {
                     return (operation(operand), remainingOps)
                 }
@@ -92,6 +120,10 @@ class CalculatorBrain
         }
         
         return evaluate()
+    }
+    
+    func brainHistory() -> String? {
+        return opStack.description
     }
     
     func clearBrain() {

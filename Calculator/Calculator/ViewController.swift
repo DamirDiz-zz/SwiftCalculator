@@ -12,6 +12,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     
+    @IBOutlet weak var history: UILabel!
+    
     var userIsInTheMiddleOfTypingANumber = false
     
     var brain = CalculatorBrain()
@@ -67,6 +69,10 @@ class ViewController: UIViewController {
         displayValue = nil
     }
     
+    func updateHistory() {
+        history.text = brain.brainHistory()
+    }
+    
     var displayValue: Double? {
         get {
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
@@ -78,6 +84,7 @@ class ViewController: UIViewController {
             } else {
                 display.text = "0.0"
             }
+            updateHistory()
         }
         
     }

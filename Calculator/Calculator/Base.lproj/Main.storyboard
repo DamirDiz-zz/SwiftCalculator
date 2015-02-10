@@ -134,15 +134,6 @@
                                     <action selector="appendComma:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OLk-kb-vSj"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lg3-mG-1r7">
-                                <rect key="frame" x="190" y="160" width="50" height="50"/>
-                                <state key="normal" title="×">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="operate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HbF-bm-pmy"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyv-MO-qfb">
                                 <rect key="frame" x="190" y="218" width="50" height="50"/>
                                 <state key="normal" title="÷">
@@ -194,7 +185,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="operate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="04F-xJ-1xb"/>
+                                    <action selector="operate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qUY-sW-UI9"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8rQ-Nm-efI">
@@ -218,6 +209,15 @@
                                 <color key="textColor" red="0.41960894337016574" green="0.41960894337016574" blue="0.41960894337016574" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wm9-IL-zAX">
+                                <rect key="frame" x="190" y="160" width="50" height="50"/>
+                                <state key="normal" title="×">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="operate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="azT-MS-QfJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -231,6 +231,7 @@
                     </view>
                     <connections>
                         <outlet property="display" destination="r8i-5u-M2T" id="0c7-uB-2Et"/>
+                        <outlet property="history" destination="iiT-Ma-80J" id="UcC-dD-coG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
