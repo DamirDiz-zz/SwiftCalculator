@@ -44,6 +44,8 @@ class CalculatorBrain
         learnOp(Op.BinaryOperation("+", +))          //Op.BinaryOperation("+") { $0 + $1 }
         learnOp(Op.BinaryOperation("−") { $1 - $0 })
         learnOp(Op.UnaryOperation("√", sqrt))        //Op.UnaryOperation("√") { sqrt($0) }
+        learnOp(Op.UnaryOperation("sin") { sin($0) })
+        learnOp(Op.UnaryOperation("cos") { cos($0) })
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]){
@@ -90,6 +92,11 @@ class CalculatorBrain
         }
         
         return evaluate()
+    }
+    
+    func clearBrain() {
+        opStack.removeAll(keepCapacity: false)
+        println("Stack cleared")
     }
     
 }

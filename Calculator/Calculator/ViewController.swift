@@ -16,6 +16,15 @@ class ViewController: UIViewController {
     
     var brain = CalculatorBrain()
     
+    @IBAction func appendComma(sender: AnyObject) {
+        //check if display.text has comma
+        if display.text!.rangeOfString(".") == nil {
+            display.text = display.text! + "."
+            userIsInTheMiddleOfTypingANumber = true
+        }
+        
+    }
+    
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
@@ -26,12 +35,17 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func clear(sender: UIButton) {
+        brain.clearBrain()
+        resetDisplay()
+    }
+    
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
-        if let result = brain.pushOperand(displayValue) {
+        if let result = brain.pushOperand(displayValue!) {
             displayValue = result
         } else {
-            displayValue = 0
+            resetDisplay()
         }
     }
     
@@ -44,18 +58,26 @@ class ViewController: UIViewController {
             if let result = brain.performOperation(operation) {
                 displayValue = result
             } else {
-                displayValue = 0
+                resetDisplay()
             }
         }
     }
     
-    var displayValue: Double {
+    private func resetDisplay() {
+        displayValue = nil
+    }
+    
+    var displayValue: Double? {
         get {
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
         }
         set {
-            display.text = "\(newValue)"
-            userIsInTheMiddleOfTypingANumber = false
+            if newValue != nil {
+                display.text = "\(newValue!)"
+                userIsInTheMiddleOfTypingANumber = false
+            } else {
+                display.text = "0.0"
+            }
         }
         
     }
