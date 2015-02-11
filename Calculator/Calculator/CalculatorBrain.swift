@@ -37,6 +37,8 @@ class CalculatorBrain
     
     private var knownOps = [String:Op]() //Dictionary<String, Op>()
 
+    var variableValues = [String, Double]() //Dictionary<String,Double>
+
     init() {
         func learnOp(op: Op) {
             knownOps[op.description] = op
@@ -74,8 +76,8 @@ class CalculatorBrain
         }
     }
     
+    
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]){
-        
         if !ops.isEmpty {
             var remainingOps = ops
             let op = remainingOps.removeLast()
@@ -104,6 +106,16 @@ class CalculatorBrain
         return (nil, ops)
     }
     
+    private func description(ops: [Op]) -> (result: String?, remainingOps: [Op]?){
+        
+        return (nil, nil)
+    }
+    
+    func description() -> String? {
+        //kopie von opStack machen
+        return nil
+    }
+    
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(opStack)
         println("\(opStack) = \(result) with \(remainder) left over")
@@ -113,6 +125,10 @@ class CalculatorBrain
     func pushOperand(operand: Double) -> Double! {
         opStack.append(Op.Operand(operand))
         return evaluate()
+    }
+    
+    func pushOperand(symbol: String) -> Double? {
+        return nil
     }
     
     func performOperation(symbol: String) -> Double? {

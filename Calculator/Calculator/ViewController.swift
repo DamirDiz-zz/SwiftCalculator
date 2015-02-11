@@ -67,9 +67,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func changeSign(sender: UIButton) {
-        /*
-        If the user is in the middle of entering a number, you probably want to change the sign of that number and allow typing to continue, not force an enter like other operations do
-        */
         if userIsInTheMiddleOfTypingANumber {
             if display.text!.rangeOfString("-") == nil {
                 display.text = "-" + display.text!
@@ -81,6 +78,12 @@ class ViewController: UIViewController {
         } else {
             operate(sender)            
         }
+    }
+    
+    @IBAction func setVariable(sender: AnyObject) {
+    }
+    
+    @IBAction func getVariable(sender: AnyObject) {
     }
     
     private func resetDisplay() {
