@@ -13,6 +13,7 @@ class CalculatorBrain
     private enum Op: Printable
     {
         case Operand(Double)
+        case Variable(String)
         case Constant(String, Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
@@ -22,6 +23,8 @@ class CalculatorBrain
                 switch self {
                 case .Operand(let operand):
                     return "\(operand)"
+                case .Variable(let variable):
+                    return "\(variable)"
                 case .Constant(let symbol, _):
                     return symbol
                 case .UnaryOperation(let symbol, _):
@@ -37,7 +40,7 @@ class CalculatorBrain
     
     private var knownOps = [String:Op]() //Dictionary<String, Op>()
 
-    var variableValues = [String, Double]() //Dictionary<String,Double>
+    var variableValues = [String:Double]() //Dictionary<String,Double>
 
     init() {
         func learnOp(op: Op) {
@@ -85,6 +88,9 @@ class CalculatorBrain
             switch op {
             case .Operand(let operand):
                 return (operand, remainingOps)
+            case .Variable(let variable):
+                //hol den wert
+                return (0, remainingOps)
             case .Constant(_, let constant):
                 return (constant, remainingOps)
             case .UnaryOperation(let name, let operation):

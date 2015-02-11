@@ -80,10 +80,17 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func setVariable(sender: AnyObject) {
+    @IBAction func setVariable(sender: UIButton) {
+        if userIsInTheMiddleOfTypingANumber {
+            //tu was
+            userIsInTheMiddleOfTypingANumber = false
+            brain.variableValues["M"] = displayValue
+        }
+
     }
     
-    @IBAction func getVariable(sender: AnyObject) {
+    @IBAction func getVariable(sender: UIButton) {
+        brain.pushOperand("M")
     }
     
     private func resetDisplay() {
