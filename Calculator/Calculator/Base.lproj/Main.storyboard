@@ -230,7 +230,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="clear:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1Wo-aJ-XbS"/>
+                                    <action selector="changeSign:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KB3-lj-mM0"/>
                                 </connections>
                             </button>
                         </subviews>

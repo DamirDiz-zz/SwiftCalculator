@@ -49,6 +49,7 @@ class CalculatorBrain
         learnOp(Op.UnaryOperation("√", sqrt))        //Op.UnaryOperation("√") { sqrt($0) }
         learnOp(Op.UnaryOperation("sin") { sin($0) })
         learnOp(Op.UnaryOperation("cos") { cos($0) })
+        learnOp(Op.UnaryOperation("ᐩ/-") { -($0) })
         learnOp(Op.Constant("π", M_PI))
     }
     
