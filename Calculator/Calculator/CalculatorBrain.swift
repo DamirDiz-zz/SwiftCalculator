@@ -10,6 +10,8 @@ import Foundation
 
 class CalculatorBrain
 {
+    // MARK: - Private API
+
     private enum Op: Printable
     {
         case Operand(Double)
@@ -39,46 +41,6 @@ class CalculatorBrain
     private var opStack = [Op]() //Array<Op>()
     
     private var knownOps = [String:Op]() //Dictionary<String, Op>()
-
-    var variableValues = [String:Double]() //Dictionary<String,Double>
-
-    init() {
-        func learnOp(op: Op) {
-            knownOps[op.description] = op
-        }
-        
-        learnOp(Op.BinaryOperation("×", *))          //Op.BinaryOperation("×") { $0 * $1 }
-        learnOp(Op.BinaryOperation("÷") { $1 / $0 })
-        learnOp(Op.BinaryOperation("+", +))          //Op.BinaryOperation("+") { $0 + $1 }
-        learnOp(Op.BinaryOperation("−") { $1 - $0 })
-        learnOp(Op.UnaryOperation("√", sqrt))        //Op.UnaryOperation("√") { sqrt($0) }
-        learnOp(Op.UnaryOperation("sin") { sin($0) })
-        learnOp(Op.UnaryOperation("cos") { cos($0) })
-        learnOp(Op.UnaryOperation("ᐩ/-") { -($0) })
-        learnOp(Op.Constant("π", M_PI))
-    }
-    
-    typealias PropertyList = AnyObject
-    
-    var program: PropertyList { // gaurenteed to be a PropertyList
-        get {
-            return opStack.map { $0.description }
-        }
-        set {
-            if let opSymbols = newValue as? Array<String> {
-                var newOpStack = [Op]()
-                for opSymbol in opSymbols {
-                    if let op = knownOps[opSymbol] {
-                        opStack.append(op)
-                    } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
-                        opStack.append(.Operand(operand))
-                    }
-                }
-                opStack = newOpStack
-            }
-        }
-    }
-    
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]){
         if !ops.isEmpty {
@@ -91,6 +53,8 @@ class CalculatorBrain
             case .Variable(let variable):
                 if let var variableValue = variableValues[variable] {
                     return (variableValue, remainingOps)
+                } else {
+                    return (nil, remainingOps)
                 }
             case .Constant(_, let constant):
                 return (constant, remainingOps)
@@ -117,6 +81,48 @@ class CalculatorBrain
         
         return (nil, nil)
     }
+    
+    // MARK: - Public API
+    
+    var variableValues = [String:Double]() //Dictionary<String,Double>
+
+    init() {
+        func learnOp(op: Op) {
+            knownOps[op.description] = op
+        }
+        
+        learnOp(Op.BinaryOperation("×", *))          //Op.BinaryOperation("×") { $0 * $1 }
+        learnOp(Op.BinaryOperation("÷") { $1 / $0 })
+        learnOp(Op.BinaryOperation("+", +))          //Op.BinaryOperation("+") { $0 + $1 }
+        learnOp(Op.BinaryOperation("−") { $1 - $0 })
+        learnOp(Op.UnaryOperation("√", sqrt))        //Op.UnaryOperation("√") { sqrt($0) }
+        learnOp(Op.UnaryOperation("sin") { sin($0) })
+        learnOp(Op.UnaryOperation("cos") { cos($0) })
+        learnOp(Op.UnaryOperation("ᐩ/-") { -($0) })
+        learnOp(Op.Constant("π", M_PI))
+    }
+
+    typealias PropertyList = AnyObject
+    
+    var program: PropertyList { // gaurenteed to be a PropertyList
+        get {
+            return opStack.map { $0.description }
+        }
+        set {
+            if let opSymbols = newValue as? Array<String> {
+                var newOpStack = [Op]()
+                for opSymbol in opSymbols {
+                    if let op = knownOps[opSymbol] {
+                        opStack.append(op)
+                    } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
+                        opStack.append(.Operand(operand))
+                    }
+                }
+                opStack = newOpStack
+            }
+        }
+    }
+    
     
     func description() -> String? {
         //kopie von opStack machen

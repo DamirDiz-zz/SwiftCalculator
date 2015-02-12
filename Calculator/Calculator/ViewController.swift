@@ -93,6 +93,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getVariable(sender: UIButton) {
+        if userIsInTheMiddleOfTypingANumber {
+            enter()
+        }
+        
         if let result = brain.pushOperand("M") {
             displayValue = result
         } else {
