@@ -89,8 +89,9 @@ class CalculatorBrain
             case .Operand(let operand):
                 return (operand, remainingOps)
             case .Variable(let variable):
-                //hol den wert
-                return (0, remainingOps)
+                if let var variableValue = variableValues[variable] {
+                    return (variableValue, remainingOps)
+                }
             case .Constant(_, let constant):
                 return (constant, remainingOps)
             case .UnaryOperation(let name, let operation):
@@ -134,7 +135,8 @@ class CalculatorBrain
     }
     
     func pushOperand(symbol: String) -> Double? {
-        return nil
+        opStack.append(Op.Variable(symbol))
+        return evaluate()
     }
     
     func performOperation(symbol: String) -> Double? {
@@ -151,6 +153,8 @@ class CalculatorBrain
     
     func clearBrain() {
         opStack.removeAll(keepCapacity: false)
+        variableValues.removeAll(keepCapacity: false)
+        
         println("Stack cleared")
     }
     

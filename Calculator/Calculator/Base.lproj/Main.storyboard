@@ -43,6 +43,9 @@
                                 <state key="normal" title="M">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="getVariable:" destination="BYZ-38-t0r" eventType="touchUpInside" id="i9n-Xl-Rm0"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhx-6q-c2a">
                                 <rect key="frame" x="136" y="96" width="104" height="93"/>
@@ -50,7 +53,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="getVariable:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iak-Re-Htb"/>
+                                    <action selector="setVariable:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BH1-7N-Z1k"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDk-wS-k5e">

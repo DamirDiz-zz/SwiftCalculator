@@ -19,7 +19,6 @@ class ViewController: UIViewController {
     var brain = CalculatorBrain()
     
     @IBAction func appendComma(sender: AnyObject) {
-        //check if display.text has comma
         if display.text!.rangeOfString(".") == nil {
             display.text = display.text! + "."
             userIsInTheMiddleOfTypingANumber = true
@@ -43,11 +42,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func enter() {
-        userIsInTheMiddleOfTypingANumber = false
-        if let result = brain.pushOperand(displayValue!) {
-            displayValue = result
-        } else {
-            resetDisplay()
+        if userIsInTheMiddleOfTypingANumber {
+            if let result = brain.pushOperand(displayValue!) {
+                displayValue = result
+            } else {
+                resetDisplay()
+            }
+            userIsInTheMiddleOfTypingANumber = false
         }
     }
     
@@ -82,15 +83,21 @@ class ViewController: UIViewController {
     
     @IBAction func setVariable(sender: UIButton) {
         if userIsInTheMiddleOfTypingANumber {
-            //tu was
             userIsInTheMiddleOfTypingANumber = false
             brain.variableValues["M"] = displayValue
+            
+            if let result = brain.evaluate() {
+                displayValue = result
+            }
         }
-
     }
     
     @IBAction func getVariable(sender: UIButton) {
-        brain.pushOperand("M")
+        if let result = brain.pushOperand("M") {
+            displayValue = result
+        } else {
+            resetDisplay()
+        }
     }
     
     private func resetDisplay() {
@@ -103,14 +110,19 @@ class ViewController: UIViewController {
     
     var displayValue: Double? {
         get {
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            if let value = NSNumberFormatter().numberFromString(display.text!) {
+                return value.doubleValue
+            } else {
+                return nil
+            }
         }
         set {
             if newValue != nil {
                 display.text = "\(newValue!)"
                 userIsInTheMiddleOfTypingANumber = false
             } else {
-                display.text = "0.0"
+                display.text = " "
+                userIsInTheMiddleOfTypingANumber = false
             }
             updateHistory()
         }
