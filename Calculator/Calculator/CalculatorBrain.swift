@@ -77,10 +77,41 @@ class CalculatorBrain
         return (nil, ops)
     }
     
-    private func description(ops: [Op]) -> (result: String?, remainingOps: [Op]?){
-        
-        return (nil, nil)
+    private func describe(ops: [Op]) -> (result: String?, remainingOps: [Op]){
+        if !ops.isEmpty {
+            var remainingOps = ops
+            let op = remainingOps.removeLast()
+            
+            switch op {
+            case .Operand(let operand):
+                return ("\(operand)", remainingOps)
+            case .Variable(let variable):
+                return (variable, remainingOps)
+            case .Constant(let name, _):
+                return (name, remainingOps)
+            case .UnaryOperation(let name, let operation):
+                let operandEvaluation = describe(remainingOps)
+                
+                if let operand = operandEvaluation.result {
+                    return ("\(name)(\(operand))", remainingOps)
+                }
+            case .BinaryOperation(let opName, let operation):
+                let op1Evaluation = describe(remainingOps)
+                if let operand1 = op1Evaluation.result {
+                    let op2Evaluation = describe(op1Evaluation.remainingOps)
+                    if let operand2 = op2Evaluation.result {
+                        return ("\(operand2) \(opName) \(operand1)", op2Evaluation.remainingOps)
+                    } else {
+                        return ("? \(opName) \(operand1)", remainingOps)
+                    }
+                } else {
+                    return ("?", remainingOps)
+                }
+            }
+        }
+        return (nil, ops)
     }
+
     
     // MARK: - Public API
     
@@ -123,10 +154,16 @@ class CalculatorBrain
         }
     }
     
-    
-    func description() -> String? {
-        //kopie von opStack machen
-        return nil
+    var description: String {
+        get {
+            var opStackClone = opStack
+            let (description, remainder) = describe(opStackClone)
+            if description != nil {
+                return description!
+            } else {
+                return "Empty Stack"
+            }
+        }
     }
     
     func evaluate() -> Double? {
@@ -152,11 +189,7 @@ class CalculatorBrain
         
         return evaluate()
     }
-    
-    func brainHistory() -> String? {
-        return opStack.description
-    }
-    
+        
     func clearBrain() {
         opStack.removeAll(keepCapacity: false)
         variableValues.removeAll(keepCapacity: false)

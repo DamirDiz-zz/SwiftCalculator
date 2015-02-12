@@ -109,7 +109,7 @@ class ViewController: UIViewController {
     }
     
     func updateHistory() {
-        history.text = brain.brainHistory()
+        history.text = brain.description
     }
     
     var displayValue: Double? {
